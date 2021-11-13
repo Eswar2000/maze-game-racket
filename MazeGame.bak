@@ -43,11 +43,10 @@
   (cond
     ((and (= posX 10) (= posY 10)) ((display "Hurray You Won") (exit)))
     (else
-     (print (drawBoard posX posY))
-     (Game (read) (read))
+     (make-pict-drawer (drawBoard 1 1))
     )
   )
 )
 (display "Initial Board\n")
 (Game 1 1)
-(display "\n End")
+(display "End")
