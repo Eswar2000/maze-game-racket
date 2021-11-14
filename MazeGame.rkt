@@ -65,16 +65,16 @@
   )
 
 #| Game function with End Game condidtion |#
-(define (Game posX posY)
+(define (Game posX posY moveCount)
   (cond
-    ((and (= posX 10) (= posY 10)) 1)
-    ((memqLite (list posX posY) bombs) 2)
+    ((and (= posX 10) (= posY 10)) (+ moveCount 1))
+    ((memqLite (list posX posY) bombs) -1)
     (else
      (print (drawBoard posX posY))
      (let* ((newLoc (displayMenu posX posY)) (newX (car newLoc)) (newY (cadr newLoc)))
        (if (checkValid newX newY 10 10)
-         (Game newX newY)
-         (Game posX posY)))
+         (Game newX newY (+ moveCount 1))
+         (Game posX posY moveCount)))
     )
   )
 )
@@ -86,10 +86,10 @@
              "Segoe UI" 'modern 'italic 'bold #f))
     (display "\n"))
   (decorate "Start GL HF" "blue")
-  (define value (Game 1 1))
+  (define value (Game 1 1 0))
   (cond
-    ((= value 1) (drawBoard 10 10) (decorate "Victory Royale!!" "blue"))
-    ((= value 2) (decorate "KEKW!! You died to a landmine\nFan-Doby Dozy If I do say so myself\n" "red"))
+    ((> value 0) (drawBoard 10 10) (decorate "Victory Royale!!" "blue") (decorate (string-append "Game Completed in : " (~v value) " Moves") "red"))
+    ((= value -1) (decorate "KEKW!! You died to a landmine\n" "red") (decorate "Fan-Doby Dozy, If I do say so myself\n" "orange"))
     (false)
     )
   (decorate "GG EZ" "blue")
