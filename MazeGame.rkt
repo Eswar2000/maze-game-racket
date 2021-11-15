@@ -6,7 +6,8 @@
 (list 2 9) (list 3 9) (list 4 9) (list 5 9) (list 6 9) (list 7 9) (list 8 9) (list 9 9) (list 10 9) (list 10 8) (list 10 7) (list 10 6) (list 10 5)))
 (define bombs (list (list 2 4) (list 5 8)))
 (define pacMan (rotate 30 (wedge 15 300 "solid" "gold")))
-(define baseShape (filled-rounded-rectangle 30 30 #:border-color "black" #:border-width 2))
+(define sqr (lambda (x) (filled-rounded-rectangle x x #:border-color "black" #:border-width 2)))
+(define baseShape (sqr 30))
 
 #| Member check function |#
 (define (memqLite item collection)
@@ -67,7 +68,7 @@
 #| Game function with End Game condidtion |#
 (define (Game posX posY moveCount)
   (cond
-    ((and (= posX 10) (= posY 10)) (+ moveCount 1))
+    ((and (= posX 10) (= posY 10)) moveCount)
     ((memqLite (list posX posY) bombs) -1)
     (else
      (print (drawBoard posX posY))
@@ -88,7 +89,7 @@
   (decorate "Start GL HF" "blue")
   (define value (Game 1 1 0))
   (cond
-    ((> value 0) (drawBoard 10 10) (decorate "Victory Royale!!" "blue") (decorate (string-append "Game Completed in : " (~v value) " Moves") "red"))
+    ((> value 0) (drawBoard 10 10) (decorate "Victory Royale!!" "blue") (decorate (string-append "Game Completed in : " (~v value) " Move(s)") "red"))
     ((= value -1) (decorate "KEKW!! You died to a landmine\n" "red") (decorate "Fan-Doby Dozy, If I do say so myself\n" "orange"))
     (false)
     )
